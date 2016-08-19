@@ -1,0 +1,2069 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/*
+ * jframeHiatt.java
+ *
+ * Created on 14-04-2016, 10:40:47 PM
+ */
+package GUI;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import Clases.Conexion;
+import Clases.ConexionTarjeta;
+import Clases.Fondo;
+import Clases.Habitacion;
+import Clases.ImagenFondo;
+import Clases.Pasajero;
+import Clases.Pax;
+import Clases.UsuarioInterno;
+import Clases.Utilidades;
+import WebService.RegistrarPasajero;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.io.IOException;
+import javax.swing.ImageIcon;
+import java.awt.Component;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.Menu;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.InputStream;
+import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Timer;
+import javasamplesformifarecards.Java_Samples_for_Mifare_CardsApp;
+import javax.imageio.ImageIO;
+import javax.smartcardio.CardException;
+import javax.smartcardio.CardTerminal;
+import javax.smartcardio.TerminalFactory;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.border.Border;
+import javax.swing.table.DefaultTableModel;
+/**
+ *
+ * @author Francisco
+ */
+public class jframeHiatt extends javax.swing.JFrame {
+    static Dimension dim;
+     static ConexionTarjeta ct;
+     static int ancho = 0;
+     static int largo = 0;
+     public static String rut_us_in= ""; 
+     public static boolean targeta_presente = true;
+     Date fecha = new Date();
+     Calendar c1 = Calendar.getInstance();
+     Calendar c2 = new GregorianCalendar();
+     int dia = c1.get(Calendar.DATE);
+     int mes = c1.get(Calendar.MONTH);
+     int annio = c1.get(Calendar.YEAR);
+     int hora = c1.get(Calendar.HOUR);
+     int minuto = c1.get(Calendar.MINUTE);
+     int segundo = c1.get(Calendar.SECOND);
+     public InputStream foto1; //=this.getClass().getResourceAsStream("/Imagenes/Grand-Hyatt.jpg");  
+    private final JLabel lblLogo;
+    public void Imagen() {
+     this.setSize(300, 400); //se selecciona el tamaño del panel
+}
+    /** Creates new form jframeHiatt */
+    public jframeHiatt(){
+        Image im=Toolkit.getDefaultToolkit().getImage("HIDLOGO.gif");
+        lblLogo = new JLabel(); 
+        initComponents();
+        dim=super.getToolkit().getScreenSize();
+         largo = dim.height;
+         ancho = dim.width;
+         ImageIcon foto2= new ImageIcon(getClass().getResource("/Imagenes/Grand-Hyatt.jpg"));
+         foto1 =this.getClass().getResourceAsStream("/Imagenes/Grand-Hyatt.jpg");  
+         this.setMaximumSize(dim);
+         this.setMinimumSize(dim);
+         this.setPreferredSize(dim);
+         try
+        {
+        BufferedImage image = ImageIO.read(foto1);
+        jDesktopPane1.setBorder(new Fondo(image));
+        }
+        catch(Exception ex)
+                {
+                    
+                }
+      
+             lblLogo.setIcon(new ImageIcon("HIDLOGO.gif"));
+             lblLogo.setBounds(210, 10, 86 , 26);//setBounds(270,10,200,70);
+       this.ComboTipoUsuario.insertItemAt("",0);
+       this.ComboTipoUsuario.setSelectedIndex(0);
+        jDesktopPane1.setVisible(true);
+        this.jInternalFrame2.setVisible(false);
+        this.jInternalFrame3.setVisible(false);
+        this.FrameLogin.setSize(600,450);
+        int x =(this.jDesktopPane1.getWidth()/2) - this.FrameLogin.getWidth()/2;
+        int y =(this.jDesktopPane1.getHeight()/2) - this.FrameLogin.getHeight()/2;
+        this.FrameLogin.setLocation(x,y);
+        this.FrameLogin.setVisible(true);
+        this.jLabel3.setVisible(false);
+        this.ComboTipoUsuario.setVisible(false);
+        this.MensajeNombreUsuario.setVisible(false);
+        this.TextoNombre.setVisible(false);
+        this.Menu.setEnabled(false);
+        this.setTitle("Mantenedor Mifare");
+        //DesapareceFrameLogo();
+         DesapareceFrameLogo1();
+        dim=super.getToolkit().getScreenSize();
+        ancho = dim.height;
+        largo = dim.width;
+        Utilidades uti = new Utilidades();
+        String dia1 = uti.validadia(dia);
+        String mes1 = uti.validames(mes) ;
+        String hora1 = uti.validadia(hora); 
+        String minuto1 = uti.validadia(minuto) ;
+        String segundo1 = uti.validadia(segundo); 
+        this.LabelFecha.setText("fecha: "+dia1+"/"+mes1+"/"+annio);
+        
+        
+    }
+
+
+    /** This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jDesktopPane1 = new javax.swing.JDesktopPane();
+        jInternalFrame2 = new javax.swing.JInternalFrame();
+        RutPas = new javax.swing.JTextField();
+        MensajeRut = new javax.swing.JLabel();
+        NombrePas = new javax.swing.JTextField();
+        MensajeNom = new javax.swing.JLabel();
+        ComboHab = new javax.swing.JComboBox();
+        MnsajeHab = new javax.swing.JLabel();
+        MensajeTt = new javax.swing.JLabel();
+        ComboTar = new javax.swing.JComboBox();
+        BotonIngresoP = new javax.swing.JButton();
+        TextoMonto = new javax.swing.JTextField();
+        LabelMonto = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        TextoDigVeri = new javax.swing.JTextField();
+        Mensaje1 = new javax.swing.JLabel();
+        SalirFrame2 = new javax.swing.JButton();
+        MensajeCombo = new javax.swing.JLabel();
+        DireccionPas = new javax.swing.JTextField();
+        MensajeDireccion = new javax.swing.JLabel();
+        EdadPas = new javax.swing.JTextField();
+        MensajeEdad = new javax.swing.JLabel();
+        EmailPas = new javax.swing.JTextField();
+        MensajeEmail = new javax.swing.JLabel();
+        FonoPas = new javax.swing.JTextField();
+        MensajeFono = new javax.swing.JLabel();
+        BotonModificar = new javax.swing.JButton();
+        jInternalFrame3 = new javax.swing.JInternalFrame();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTableConsumo = new javax.swing.JTable();
+        Buscar = new javax.swing.JButton();
+        Volver = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        resultado = new javax.swing.JLabel();
+        Mensaje2 = new javax.swing.JLabel();
+        ComboPax = new javax.swing.JComboBox();
+        MensajeLisatPax = new javax.swing.JLabel();
+        LabelFecha = new javax.swing.JLabel();
+        FrameLogin = new javax.swing.JInternalFrame();
+        Mensaje3 = new javax.swing.JLabel();
+        MensajeRutUsuario = new javax.swing.JLabel();
+        TextoRut = new javax.swing.JTextField();
+        MensajeNombreUsuario = new javax.swing.JLabel();
+        TextoNombre = new javax.swing.JTextField();
+        MensajePasswordUsuario = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        ComboTipoUsuario = new javax.swing.JComboBox();
+        BotonIngresarUsuario = new javax.swing.JButton();
+        BotonSalirUsuario = new javax.swing.JButton();
+        TextoPassword = new javax.swing.JPasswordField();
+        TextoDigVeriUsu = new javax.swing.JTextField();
+        LabeelGuion = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        Menu = new javax.swing.JMenu();
+        Item1 = new javax.swing.JMenuItem();
+        Item2 = new javax.swing.JMenuItem();
+        Item3 = new javax.swing.JMenuItem();
+        Item4 = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        ItemSaldo = new javax.swing.JMenuItem();
+        ItemSesion = new javax.swing.JMenuItem();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+
+        jDesktopPane1.setBackground(new java.awt.Color(51, 51, 51));
+        jDesktopPane1.setForeground(new java.awt.Color(51, 51, 51));
+        jDesktopPane1.setName("jDesktopPane1"); // NOI18N
+
+        jInternalFrame2.setResizable(true);
+        jInternalFrame2.setTitle("Ingreso de Pasajero"); // NOI18N
+        jInternalFrame2.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
+        jInternalFrame2.setMaximumSize(new java.awt.Dimension(600, 500));
+        jInternalFrame2.setMinimumSize(new java.awt.Dimension(100, 50));
+        jInternalFrame2.setName("jInternalFrame2"); // NOI18N
+        jInternalFrame2.setPreferredSize(new java.awt.Dimension(800, 700));
+        jInternalFrame2.setVisible(true);
+
+        RutPas.setName("RutPas"); // NOI18N
+        RutPas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                RutPasKeyTyped(evt);
+            }
+        });
+
+        MensajeRut.setText("Ingrese Rut");
+        MensajeRut.setName("MensajeRut"); // NOI18N
+
+        NombrePas.setName("NombrePas"); // NOI18N
+        NombrePas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                NombrePasKeyTyped(evt);
+            }
+        });
+
+        MensajeNom.setText("Ingrese Nombre");
+        MensajeNom.setName("MensajeNom"); // NOI18N
+
+        ComboHab.setName("ComboHab"); // NOI18N
+
+        MnsajeHab.setText("Numero Habitaciòn");
+        MnsajeHab.setName("MnsajeHab"); // NOI18N
+
+        MensajeTt.setText("Tipo de Tarjeta");
+        MensajeTt.setName("MensajeTt"); // NOI18N
+
+        ComboTar.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Prepagada", "Libre" }));
+        ComboTar.setToolTipText("");
+        ComboTar.setName("ComboTar"); // NOI18N
+        ComboTar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ComboTarMouseClicked(evt);
+            }
+        });
+        ComboTar.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                ComboTarItemStateChanged(evt);
+            }
+        });
+        ComboTar.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                ComboTarPropertyChange(evt);
+            }
+        });
+
+        BotonIngresoP.setText("Guardar");
+        BotonIngresoP.setName("BotonIngresoP"); // NOI18N
+        BotonIngresoP.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BotonIngresoPMouseClicked(evt);
+            }
+        });
+
+        TextoMonto.setText("0");
+        TextoMonto.setEnabled(false);
+        TextoMonto.setName("TextoMonto"); // NOI18N
+        TextoMonto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                TextoMontoKeyTyped(evt);
+            }
+        });
+
+        LabelMonto.setText("Monto");
+        LabelMonto.setName("LabelMonto"); // NOI18N
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jLabel1.setText("  -");
+        jLabel1.setName("jLabel1"); // NOI18N
+
+        TextoDigVeri.setName("TextoDigVeri"); // NOI18N
+        TextoDigVeri.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TextoDigVeriKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                TextoDigVeriKeyTyped(evt);
+            }
+        });
+
+        Mensaje1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clases/HIDLOGO.gif"))); // NOI18N
+        Mensaje1.setName("Mensaje1"); // NOI18N
+        Mensaje1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                Mensaje1PropertyChange(evt);
+            }
+        });
+
+        SalirFrame2.setText("Salir");
+        SalirFrame2.setName("SalirFrame2"); // NOI18N
+        SalirFrame2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                SalirFrame2MouseClicked(evt);
+            }
+        });
+
+        MensajeCombo.setName("MensajeCombo"); // NOI18N
+
+        DireccionPas.setName("DireccionPas"); // NOI18N
+
+        MensajeDireccion.setText("Direccion");
+        MensajeDireccion.setName("MensajeDireccion"); // NOI18N
+
+        EdadPas.setName("EdadPas"); // NOI18N
+        EdadPas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                EdadPasKeyTyped(evt);
+            }
+        });
+
+        MensajeEdad.setText("Edad");
+        MensajeEdad.setName("MensajeEdad"); // NOI18N
+
+        EmailPas.setName("EmailPas"); // NOI18N
+
+        MensajeEmail.setText("E_mail");
+        MensajeEmail.setName("MensajeEmail"); // NOI18N
+
+        FonoPas.setName("FonoPas"); // NOI18N
+        FonoPas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                FonoPasKeyTyped(evt);
+            }
+        });
+
+        MensajeFono.setText("Fono");
+        MensajeFono.setName("MensajeFono"); // NOI18N
+
+        BotonModificar.setText("Modificar");
+        BotonModificar.setName("BotonModificar"); // NOI18N
+        BotonModificar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BotonModificarMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jInternalFrame2Layout = new javax.swing.GroupLayout(jInternalFrame2.getContentPane());
+        jInternalFrame2.getContentPane().setLayout(jInternalFrame2Layout);
+        jInternalFrame2Layout.setHorizontalGroup(
+            jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jInternalFrame2Layout.createSequentialGroup()
+                .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jInternalFrame2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(MensajeDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(MensajeRut)
+                                .addComponent(MensajeNom)
+                                .addComponent(MensajeCombo, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                                .addComponent(MensajeEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(MensajeEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(MensajeFono))
+                        .addGap(18, 18, 18)
+                        .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(EmailPas, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(NombrePas, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jInternalFrame2Layout.createSequentialGroup()
+                                .addComponent(RutPas, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(TextoDigVeri, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(58, 58, 58)
+                                .addComponent(BotonModificar))
+                            .addComponent(DireccionPas, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(EdadPas, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(FonoPas, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(Mensaje1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(64, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jInternalFrame2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jInternalFrame2Layout.createSequentialGroup()
+                        .addComponent(MnsajeHab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                    .addGroup(jInternalFrame2Layout.createSequentialGroup()
+                        .addComponent(MensajeTt)
+                        .addGap(27, 27, 27)))
+                .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jInternalFrame2Layout.createSequentialGroup()
+                        .addComponent(ComboHab, 0, 60, Short.MAX_VALUE)
+                        .addGap(284, 284, 284))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jInternalFrame2Layout.createSequentialGroup()
+                        .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(BotonIngresoP, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
+                            .addComponent(ComboTar, 0, 127, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(LabelMonto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(TextoMonto, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(SalirFrame2))
+                        .addGap(61, 61, 61))))
+        );
+        jInternalFrame2Layout.setVerticalGroup(
+            jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jInternalFrame2Layout.createSequentialGroup()
+                .addComponent(Mensaje1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(MensajeRut)
+                    .addComponent(RutPas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(TextoDigVeri, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BotonModificar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(NombrePas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(MensajeNom))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(DireccionPas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(MensajeDireccion))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(EdadPas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(MensajeEdad))
+                .addGap(7, 7, 7)
+                .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(MensajeEmail)
+                    .addComponent(EmailPas, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(FonoPas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(MensajeFono))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(MnsajeHab)
+                    .addComponent(ComboHab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(MensajeTt, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ComboTar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LabelMonto)
+                    .addComponent(TextoMonto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BotonIngresoP)
+                    .addComponent(SalirFrame2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addComponent(MensajeCombo)
+                .addContainerGap())
+        );
+
+        jInternalFrame2.setBounds(510, 10, 470, 370);
+        jDesktopPane1.add(jInternalFrame2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jInternalFrame3.setTitle("Consultar Consumos"); // NOI18N
+        jInternalFrame3.setAutoscrolls(true);
+        jInternalFrame3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jInternalFrame3.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
+        jInternalFrame3.setFocusable(false);
+        jInternalFrame3.setName("jInternalFrame3"); // NOI18N
+        jInternalFrame3.setVisible(true);
+
+        jScrollPane1.setName("jScrollPane1"); // NOI18N
+
+        jTableConsumo.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Nombre", "Precio"
+            }
+        ));
+        jTableConsumo.setMaximumSize(new java.awt.Dimension(200, 300));
+        jTableConsumo.setMinimumSize(new java.awt.Dimension(200, 300));
+        jTableConsumo.setName("jTableConsumo"); // NOI18N
+        jTableConsumo.setPreferredSize(new java.awt.Dimension(200, 300));
+        jScrollPane1.setViewportView(jTableConsumo);
+
+        Buscar.setText("Buscar");
+        Buscar.setName("Buscar"); // NOI18N
+        Buscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BuscarMouseClicked(evt);
+            }
+        });
+
+        Volver.setText("Salir");
+        Volver.setName("Volver"); // NOI18N
+        Volver.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                VolverMouseClicked(evt);
+            }
+        });
+
+        jLabel2.setText("Total Acumulado:");
+        jLabel2.setName("jLabel2"); // NOI18N
+
+        resultado.setText("0");
+        resultado.setName("resultado"); // NOI18N
+
+        Mensaje2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clases/HIDLOGO.gif"))); // NOI18N
+        Mensaje2.setName("Mensaje2"); // NOI18N
+        Mensaje2.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                Mensaje2PropertyChange(evt);
+            }
+        });
+
+        ComboPax.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pasajeros" }));
+        ComboPax.setName("ComboPax"); // NOI18N
+
+        MensajeLisatPax.setFont(new java.awt.Font("Cambria", 0, 14));
+        MensajeLisatPax.setForeground(new java.awt.Color(153, 153, 153));
+        MensajeLisatPax.setText("Lista de Pasajeros");
+        MensajeLisatPax.setName("MensajeLisatPax"); // NOI18N
+
+        javax.swing.GroupLayout jInternalFrame3Layout = new javax.swing.GroupLayout(jInternalFrame3.getContentPane());
+        jInternalFrame3.getContentPane().setLayout(jInternalFrame3Layout);
+        jInternalFrame3Layout.setHorizontalGroup(
+            jInternalFrame3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jInternalFrame3Layout.createSequentialGroup()
+                .addGroup(jInternalFrame3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Mensaje2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jInternalFrame3Layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addGroup(jInternalFrame3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jInternalFrame3Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(resultado, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jInternalFrame3Layout.createSequentialGroup()
+                                .addGroup(jInternalFrame3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(Buscar)
+                                    .addComponent(Volver))
+                                .addGap(52, 52, 52)
+                                .addGroup(jInternalFrame3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(ComboPax, 0, 214, Short.MAX_VALUE)
+                                    .addComponent(MensajeLisatPax, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(134, 134, 134))
+        );
+        jInternalFrame3Layout.setVerticalGroup(
+            jInternalFrame3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jInternalFrame3Layout.createSequentialGroup()
+                .addComponent(Mensaje2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
+                .addComponent(MensajeLisatPax)
+                .addGap(11, 11, 11)
+                .addGroup(jInternalFrame3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Buscar)
+                    .addComponent(ComboPax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
+                .addComponent(Volver)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                .addGroup(jInternalFrame3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(resultado))
+                .addGap(23, 23, 23))
+            .addGroup(jInternalFrame3Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jInternalFrame3.setBounds(0, 410, 920, 270);
+        jDesktopPane1.add(jInternalFrame3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        LabelFecha.setForeground(new java.awt.Color(255, 51, 51));
+        LabelFecha.setText("fecha:");
+        LabelFecha.setName("LabelFecha"); // NOI18N
+        LabelFecha.setBounds(80, 0, 240, 14);
+        jDesktopPane1.add(LabelFecha, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        FrameLogin.setTitle("Login Usuario"); // NOI18N
+        FrameLogin.setName("FrameLogin"); // NOI18N
+        FrameLogin.setVisible(true);
+
+        Mensaje3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Clases/HIDLOGO.gif"))); // NOI18N
+        Mensaje3.setName("Mensaje3"); // NOI18N
+        Mensaje3.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                Mensaje3PropertyChange(evt);
+            }
+        });
+
+        MensajeRutUsuario.setText("Rut Usuario");
+        MensajeRutUsuario.setName("MensajeRutUsuario"); // NOI18N
+
+        TextoRut.setName("TextoRut"); // NOI18N
+        TextoRut.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                TextoRutKeyTyped(evt);
+            }
+        });
+
+        MensajeNombreUsuario.setText("Nombre Usuario");
+        MensajeNombreUsuario.setName("MensajeNombreUsuario"); // NOI18N
+
+        TextoNombre.setName("TextoNombre"); // NOI18N
+
+        MensajePasswordUsuario.setText("Password Usuario");
+        MensajePasswordUsuario.setName("MensajePasswordUsuario"); // NOI18N
+
+        jLabel3.setText("Tipo de Usuario");
+        jLabel3.setName("jLabel3"); // NOI18N
+
+        ComboTipoUsuario.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "recepcionista", "dependencias", "pasajero" }));
+        ComboTipoUsuario.setName("ComboTipoUsuario"); // NOI18N
+        ComboTipoUsuario.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                ComboTipoUsuarioItemStateChanged(evt);
+            }
+        });
+
+        BotonIngresarUsuario.setText("Enviar");
+        BotonIngresarUsuario.setName("BotonIngresarUsuario"); // NOI18N
+        BotonIngresarUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BotonIngresarUsuarioMouseClicked(evt);
+            }
+        });
+
+        BotonSalirUsuario.setText("Salir del Sistema");
+        BotonSalirUsuario.setName("BotonSalirUsuario"); // NOI18N
+        BotonSalirUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BotonSalirUsuarioMouseClicked(evt);
+            }
+        });
+
+        TextoPassword.setName("TextoPassword"); // NOI18N
+
+        TextoDigVeriUsu.setName("TextoDigVeriUsu"); // NOI18N
+        TextoDigVeriUsu.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                TextoDigVeriUsuKeyTyped(evt);
+            }
+        });
+
+        LabeelGuion.setFont(new java.awt.Font("Tahoma", 0, 18));
+        LabeelGuion.setText("-");
+        LabeelGuion.setName("LabeelGuion"); // NOI18N
+
+        javax.swing.GroupLayout FrameLoginLayout = new javax.swing.GroupLayout(FrameLogin.getContentPane());
+        FrameLogin.getContentPane().setLayout(FrameLoginLayout);
+        FrameLoginLayout.setHorizontalGroup(
+            FrameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(FrameLoginLayout.createSequentialGroup()
+                .addGroup(FrameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Mensaje3, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(FrameLoginLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(FrameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(FrameLoginLayout.createSequentialGroup()
+                                .addComponent(BotonIngresarUsuario)
+                                .addGap(8, 8, 8))
+                            .addGroup(FrameLoginLayout.createSequentialGroup()
+                                .addGroup(FrameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(MensajeRutUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(MensajeNombreUsuario)
+                                    .addComponent(MensajePasswordUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)))
+                        .addGroup(FrameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(TextoPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TextoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BotonSalirUsuario)
+                            .addGroup(FrameLoginLayout.createSequentialGroup()
+                                .addComponent(TextoRut, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(LabeelGuion)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(TextoDigVeriUsu, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(ComboTipoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(44, Short.MAX_VALUE))
+        );
+        FrameLoginLayout.setVerticalGroup(
+            FrameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(FrameLoginLayout.createSequentialGroup()
+                .addGroup(FrameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(FrameLoginLayout.createSequentialGroup()
+                        .addComponent(Mensaje3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(52, 52, 52)
+                        .addComponent(jLabel3))
+                    .addComponent(ComboTipoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(FrameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(TextoRut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(MensajeRutUsuario)
+                    .addComponent(LabeelGuion)
+                    .addComponent(TextoDigVeriUsu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(FrameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(TextoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(MensajeNombreUsuario))
+                .addGap(18, 18, 18)
+                .addGroup(FrameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(TextoPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(MensajePasswordUsuario))
+                .addGap(26, 26, 26)
+                .addGroup(FrameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BotonSalirUsuario)
+                    .addComponent(BotonIngresarUsuario))
+                .addContainerGap(35, Short.MAX_VALUE))
+        );
+
+        FrameLogin.setBounds(50, 10, 420, 328);
+        jDesktopPane1.add(FrameLogin, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jMenuBar1.setName("jMenuBar1"); // NOI18N
+
+        Menu.setBackground(new java.awt.Color(204, 204, 204));
+        Menu.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        Menu.setText("Opciones"); // NOI18N
+        Menu.setToolTipText("");
+        Menu.setActionCommand("Opciones\nIngresa\nConsultar\nCargar monto"); // NOI18N
+        Menu.setEnabled(false);
+        Menu.setName("Menu"); // NOI18N
+        Menu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                MenuMouseClicked(evt);
+            }
+        });
+
+        Item1.setText("Ingresar Pasajero");
+        Item1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        Item1.setName("Item1"); // NOI18N
+        Item1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                Item1MousePressed(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Item1MouseClicked(evt);
+            }
+        });
+        Menu.add(Item1);
+
+        Item2.setText("Cargar Monto");
+        Item2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        Item2.setName("Item2"); // NOI18N
+        Item2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Item2MouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                Item2MousePressed(evt);
+            }
+        });
+        Menu.add(Item2);
+
+        Item3.setText("Consultar Consumos");
+        Item3.setToolTipText("");
+        Item3.setAutoscrolls(true);
+        Item3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        Item3.setName("Item3"); // NOI18N
+        Item3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                Item3MousePressed(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Item3MouseClicked(evt);
+            }
+        });
+        Menu.add(Item3);
+
+        Item4.setText("Salir");
+        Item4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        Item4.setName("Item4"); // NOI18N
+        Item4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                Item4MousePressed(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Item4MouseClicked(evt);
+            }
+        });
+        Menu.add(Item4);
+
+        jMenuItem1.setText("conectar webserver");
+        jMenuItem1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jMenuItem1.setName("jMenuItem1"); // NOI18N
+        jMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jMenuItem1MousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jMenuItem1MouseReleased(evt);
+            }
+        });
+        Menu.add(jMenuItem1);
+
+        ItemSaldo.setText("Consultar Saldo");
+        ItemSaldo.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        ItemSaldo.setName("ItemSaldo"); // NOI18N
+        ItemSaldo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                ItemSaldoMousePressed(evt);
+            }
+        });
+        Menu.add(ItemSaldo);
+
+        ItemSesion.setText("Cerrar sesion");
+        ItemSesion.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        ItemSesion.setName("ItemSesion"); // NOI18N
+        ItemSesion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ItemSesionMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                ItemSesionMousePressed(evt);
+            }
+        });
+        Menu.add(ItemSesion);
+
+        jMenuBar1.add(Menu);
+
+        setJMenuBar(jMenuBar1);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jDesktopPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 987, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 811, Short.MAX_VALUE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+    
+
+    @Override
+    public Component getFocusOwner() {
+        this.Menu.setEnabled(true);
+        return super.getFocusOwner();
+        
+    }    
+    
+
+//Se crea un método cuyo parámetro debe ser un objeto Graphics
+
+  
+
+    public int ajustar_ancho()
+    {
+        dim=super.getToolkit().getScreenSize();
+       largo = dim.height;
+        ancho = dim.width;
+        int an = ancho;
+        return an;
+    }
+    public int ajustar_largo()
+    {
+        dim=super.getToolkit().getScreenSize();
+        largo = dim.height;
+        ancho = dim.width;
+        int an = largo;
+        return an;
+    }
+    private void RutPasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RutPasKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        int limite = 8;
+        String texto = this.RutPas.getText();
+        if(texto.length()==limite || !Character.isDigit(c))
+        {
+            evt.consume();
+            Toolkit.getDefaultToolkit().beep();
+        }
+    }//GEN-LAST:event_RutPasKeyTyped
+
+    private void NombrePasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NombrePasKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        
+        String texto = this.NombrePas.getText();
+        if(Character.isDigit(c))
+        {
+            evt.consume();
+            Toolkit.getDefaultToolkit().beep();
+        }
+    }//GEN-LAST:event_NombrePasKeyTyped
+
+    private void ComboTarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ComboTarMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ComboTarMouseClicked
+
+    private void ComboTarItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ComboTarItemStateChanged
+      String Combo =ComboTar.getSelectedItem().toString();
+        if(Combo.equals("Prepagada"))
+        {  
+            TextoMonto.setText("");
+            TextoMonto.setEnabled(true);
+            TextoMonto.requestFocus();
+            
+            
+        } 
+        else
+        {
+            if(Combo.equals("Libre"))
+            {  
+                TextoMonto.setText("0");
+            TextoMonto.setEnabled(false);
+         
+            
+            }  
+            
+        }         
+}//GEN-LAST:event_ComboTarItemStateChanged
+
+    private void ComboTarPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_ComboTarPropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ComboTarPropertyChange
+
+    private void BotonIngresoPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonIngresoPMouseClicked
+        // TODO add your handling code here:
+        this.direccion = this.DireccionPas.getText().toString();
+        if(!this.EdadPas.getText().equals(""))
+        this.edad = Integer.parseInt(this.EdadPas.getText().toString());
+        else
+            edad =0;
+        if(!this.FonoPas.getText().equals(""))
+        this.fono = Integer.parseInt(this.FonoPas.getText().toString());
+        else
+            edad =0;
+        this.email = this.EmailPas.getText().toString();
+        this.nom = NombrePas.getText().toString();
+        this.rut = RutPas.getText().toString();
+        this.numh = ComboHab.getSelectedItem().toString();
+        this.tipot=ComboTar.getSelectedItem().toString();
+        this.monto=TextoMonto.getText().toString();
+        this.dig = TextoDigVeri.getText().toString();
+        int r = validacion(rut);
+        int d = validacion(dig);
+        if(nom.equals("")|| rut.equals("")||numh.equals("")||
+                tipot.equals("")|| dig.equals("")|| direccion.equals("")
+                || email.equals("")|| edad == 0 || fono == 0)
+        {
+           JOptionPane.showMessageDialog(null, "Debe ingresar todos los datos", "Ventana", JOptionPane.ERROR_MESSAGE);
+        }
+        else
+        {
+            if((monto.equals("0")||monto.equals("")) && tipot.equals("Prepagada"))
+             {
+              JOptionPane.showMessageDialog(null, "El monto cargado debe ser mayor a 0 ", "Ventana", JOptionPane.ERROR_MESSAGE);
+               TextoMonto.requestFocus();
+             }
+            else
+            {
+            if(edad > 100 || edad <18)
+            {
+                JOptionPane.showMessageDialog(null, "Edad fuera de rango ", "Ventana", JOptionPane.ERROR_MESSAGE);
+                this.EdadPas.requestFocus();
+            }
+            else
+            {
+            Utilidades uti = new Utilidades();
+            if(!uti.isEmail(email))
+            {
+                //Object a= (uti.isEmail(email)?"Hola Mundo":"Hola Pancho").toString();
+                JOptionPane.showMessageDialog(null,"Email incorrecto", "Ventana", JOptionPane.ERROR_MESSAGE);
+                this.EmailPas.requestFocus();
+            }
+          
+            else
+            {
+                String rut1 = invertir(rut);
+                String digito1 = ValidaRut(rut1);
+                if(dig.equals("k")&& digito1.equals("K"))
+              {
+                  dig = "K";
+              }
+              else
+              {
+               if(!digito1.equals(dig))
+               {
+                  JOptionPane.showMessageDialog(null, "Rut invalido", "Ventana", JOptionPane.ERROR_MESSAGE);
+                  RutPas.requestFocus();
+               }
+               else
+               {
+                if(dig.equals("k") || dig.equals("K"))
+                dig = "f"; 
+                if(ingreso)
+                   {   
+                       String pasarut = ""+rut+dig;
+                       Pasajero pax = new Pasajero(pasarut,nom,direccion,edad,email,fono);
+                       Utilidades u = new Utilidades();
+                       int ing = u.insertarPasajero(pax);
+                       if(ing == 1)
+                       {
+                         JOptionPane.showMessageDialog(null, "Pasajero ingresado correctamente");
+                       }
+                       else
+                       {
+                           JOptionPane.showMessageDialog(null, "Los datos del pasajero no se ha podido guadar en la Base de Datos", "Ventana", JOptionPane.ERROR_MESSAGE);
+                       }
+                   }
+                if(modificar)
+                {
+                     String pasarut = ""+rut+dig;
+                       Pasajero pax = new Pasajero(pasarut,nom,direccion,edad,email,fono);
+                       Utilidades u = new Utilidades();
+                       int ing = u.actualizarPasajero(pax);
+                       if(ing == 1)
+                       {
+                         JOptionPane.showMessageDialog(null, "Datos del Pasajero actualizados correctamente");
+                       }
+                       else
+                       {
+                           JOptionPane.showMessageDialog(null, "No es posible actualizar los datos del pasajero", "Ventana", JOptionPane.ERROR_MESSAGE);
+                       }
+                }
+                int entrega = WindowUploaded1();
+        
+           
+                if(entrega == 1)
+                {    
+                   this.Menu.setEnabled(false);
+                   this.rut = this.rut+this.dig;
+                   
+                   this.jInternalFrame2.setVisible(false);
+                   
+                  Java_Samples_for_Mifare_CardsApp nuevo= new Java_Samples_for_Mifare_CardsApp();
+                  nuevo.TranspasoDatos(numh, tipot, nom, rut, monto,"0",nombre_us);
+                //this.jInternalFrame2.setVisible(false);
+                  nuevo.startup();
+                  
+            
+                   
+                }
+                else
+                {
+                     this.jInternalFrame2.setVisible(false);
+                     this.Menu.setEnabled(true);
+                }
+            
+                
+               }
+             }     
+            }
+          }      
+        }
+       }     
+    }//GEN-LAST:event_BotonIngresoPMouseClicked
+
+    private void TextoMontoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextoMontoKeyTyped
+        // TODO add your handling code here:
+         char c = evt.getKeyChar();
+        
+        String texto = this.TextoMonto.getText();
+        if(!Character.isDigit(c))
+        {
+            evt.consume();
+            Toolkit.getDefaultToolkit().beep();
+        }
+    }//GEN-LAST:event_TextoMontoKeyTyped
+
+    private void TextoDigVeriKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextoDigVeriKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        int limite = 1;
+        String texto = this.TextoDigVeri.getText();
+        if(texto.length()==limite || !Character.isDigit(c)) 
+        {
+            if((c !='k'&& c !='K')||texto.length()==limite)
+            {
+            evt.consume();
+            Toolkit.getDefaultToolkit().beep();
+            }
+           
+        }
+         else
+         {
+                
+         }
+    }//GEN-LAST:event_TextoDigVeriKeyTyped
+
+    private void Mensaje1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_Mensaje1PropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Mensaje1PropertyChange
+
+    private void SalirFrame2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SalirFrame2MouseClicked
+        // TODO add your handling code here:
+         this.jInternalFrame2.setVisible(false);
+         this.Menu.setEnabled(true);
+    }//GEN-LAST:event_SalirFrame2MouseClicked
+
+    private void BuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BuscarMouseClicked
+        // TODO add your handling code here:
+         if(this.ComboPax.getSelectedItem().toString().equals("Pasajeros"))
+         {
+             JOptionPane.showMessageDialog(null,"Deve Seleccionar un pasajero", "Ventana", JOptionPane.ERROR_MESSAGE);
+         }
+         else
+         {
+             listarPax(this.ComboPax.getSelectedItem().toString());
+         }
+    }//GEN-LAST:event_BuscarMouseClicked
+
+    private void VolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_VolverMouseClicked
+        // TODO add your handling code here:
+        this.jInternalFrame3.setVisible(false);
+        this.Menu.setEnabled(true);
+    }//GEN-LAST:event_VolverMouseClicked
+
+    private void Mensaje2PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_Mensaje2PropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Mensaje2PropertyChange
+
+    private void Item1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Item1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Item1MouseClicked
+
+    private void Item1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Item1MousePressed
+        // TODO add your handling code here:
+      if(tipo_us.equals("dependencias"))
+      {
+           JOptionPane.showMessageDialog(null,"Usted no tiene acceso a esta operación", "Ventana", JOptionPane.ERROR_MESSAGE);
+      }
+      else
+      {
+        if(tipo_us.equals("recepcionista"))
+        {
+         LimpiarFrame2();
+         EnabledTrue();
+         Utilidades u1 = new Utilidades();
+        List lista = u1.TraerHabitacion();
+       
+        
+        Color[] colores = null;
+        String[] habitaciones = null;
+        int largolist = lista.size();
+        if(largolist == 0)
+        {
+             JOptionPane.showMessageDialog(null,"No hay conexion a la Base de Datos", "Ventana", JOptionPane.ERROR_MESSAGE);
+        }
+        else
+        {    
+            
+        Habitacion habi = new Habitacion();
+
+        
+        for(int i = 0; i < largolist; i++)
+        {
+          
+           Habitacion hab = new Habitacion();
+           hab = (Habitacion)lista.get(i);
+           String d = hab.getNum_hab();
+           int abi = hab.getEstado_hab();
+           if(abi == 0)
+           {
+               this.ComboHab.addItem(d);
+               /*ComboHab.setRenderer(new DefaultListCellRenderer() 
+                       { @Override public void paint(Graphics g) 
+                       { setBackground(Color.BLUE); setForeground(Color.BLACK); 
+                       super.paint(g); } });*/
+               //colores[i] = Color.BLACK;
+               //habitaciones[i] = d;
+              
+           }
+           if(abi == 1)
+           {
+               //colores[i] = Color.RED;
+               //habitaciones[i] = d;
+           }
+         
+              
+       
+           
+        
+        }
+        
+        this.jInternalFrame2.setTitle("Ingreso Pasajero   Usuario:"+nombre_us);
+        this.jInternalFrame2.setSize(500,380);
+        int x =(this.jDesktopPane1.getWidth()/2) - this.jInternalFrame2.getWidth()/2;
+        int y =(this.jDesktopPane1.getHeight()/2) - this.jInternalFrame2.getHeight()/2;
+        this.jInternalFrame2.setLocation(x,y);
+        this.jInternalFrame2.setVisible(true);
+         paso = 1;
+         this.Menu.setEnabled(false);
+        }
+       }
+      }
+    }//GEN-LAST:event_Item1MousePressed
+
+    private void Item2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Item2MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Item2MouseClicked
+
+    private void Item2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Item2MousePressed
+        // TODO add your handling code here:
+        int entrega = WindowUploaded1();
+        
+           
+            if(entrega == 1)
+            {    
+            this.Menu.setEnabled(false);
+            Java_Samples_for_Mifare_CardsApp nuevo= new Java_Samples_for_Mifare_CardsApp();
+            nuevo.startup();
+            }
+            else
+            {
+                this.Menu.setEnabled(true);
+            }
+    }//GEN-LAST:event_Item2MousePressed
+
+    private void Item3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Item3MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Item3MouseClicked
+
+    private void Item3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Item3MousePressed
+        // TODO add your handling code here:
+         LimpiarFrame3();
+        Utilidades u = new Utilidades();
+        List lista= u.TraerPasajeros();
+        this.ComboPax.addItem("Pasajeros");
+        int largol = lista.size();
+        if(largol == 1 && lista.get(0).toString().equals("nada"))
+        {
+            JOptionPane.showMessageDialog(null,"No hay conexion a la base de datos");
+        }
+        else
+        {
+            if(largol == 0)
+            {
+            JOptionPane.showMessageDialog(null,"No hay pasajeros registrados");
+            }
+            else
+            {
+               for(int i = 0; i < largol; i++)
+               {
+                  Pax p = new Pax();
+                  p = (Pax)lista.get(i);
+                  this.ComboPax.addItem(p.getNombre().toString());
+               }
+               int x = (this.jDesktopPane1.getWidth()/2)-this.jInternalFrame3.getWidth()/2;
+               int y = (this.jDesktopPane1.getHeight()/2)-this.jInternalFrame3.getHeight()/2;
+               this.jInternalFrame3.setLocation(x, y);
+               this.jInternalFrame3.setVisible(true);
+               this.Menu.setEnabled(false); 
+            }
+        }
+        
+    }//GEN-LAST:event_Item3MousePressed
+
+    private void Item4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Item4MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Item4MouseClicked
+
+    private void Item4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Item4MousePressed
+        // TODO add your handling code here:
+         System.exit(0);
+    }//GEN-LAST:event_Item4MousePressed
+
+    private void MenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MenuMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_MenuMouseClicked
+
+    private void TextoDigVeriKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextoDigVeriKeyReleased
+        // TODO add your handling code here:
+        if(this.RutPas.getText().toString().length()==8 && !this.TextoDigVeri.getText().toString().equals(""))
+        {
+               rut = this.RutPas.getText().toString();
+               dig = this.TextoDigVeri.getText().toString();
+               String rut1 = invertir(rut);
+                String digito1 = ValidaRut(rut1);
+                if(dig.equals("k")&& digito1.equals("K"))
+              {
+                  dig = "K";
+              }
+              else
+              {
+               if(!digito1.equals(dig))
+               {
+                  JOptionPane.showMessageDialog(null, "Rut invalido", "Ventana", JOptionPane.ERROR_MESSAGE);
+                  this.TextoDigVeri.setText("");
+                  this.NombrePas.setText("");
+                  this.DireccionPas.setText("");
+                  this.EdadPas.setText("");
+                  this.EmailPas.setText("");
+                  this.FonoPas.setText("");
+                  RutPas.requestFocus();
+               }
+               else
+               {
+                Utilidades ut = new Utilidades();
+                String rutpax = ""+this.RutPas.getText().toString()+this.TextoDigVeri.getText().toString();
+                 ArrayList<Pasajero> listas = ut.buscarPasajeroRut(rutpax);
+                 if(listas.isEmpty())
+                 {
+                   ingreso = true;
+                   JOptionPane.showMessageDialog(null, "El pasajero no registra historial", "Ventana", JOptionPane.ERROR_MESSAGE);
+                 }
+                 else
+                 {
+                     ingreso = false;
+                   for(Pasajero p1:listas)
+                   {
+                    this.NombrePas.setText(p1.getNombre_pas());
+                    this.DireccionPas.setText(p1.getDireccion_pas());
+                    this.EdadPas.setText(Integer.toString(p1.getEdad_pas()));
+                    this.EmailPas.setText(p1.getEmail_pas());
+                    this.FonoPas.setText(Integer.toString(p1.getFono_pas()));
+                    this.BotonModificar.setVisible(true);
+                    
+                    EnabledFalse();
+                   }
+                  
+                 }
+               }
+          }
+        }
+    }//GEN-LAST:event_TextoDigVeriKeyReleased
+
+    private void jMenuItem1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MouseReleased
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jMenuItem1MouseReleased
+
+    private void jMenuItem1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MousePressed
+        // TODO add your handling code here:
+        RegistrarPasajero p1 = new RegistrarPasajero();
+        String nom1 = p1.getNombre();
+        String rut1 = p1.getRut();
+    }//GEN-LAST:event_jMenuItem1MousePressed
+
+    private void EdadPasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_EdadPasKeyTyped
+        // TODO add your handling code here:
+         char c = evt.getKeyChar();
+        int limite = 2;
+        String texto = this.EdadPas.getText();
+        if(texto.length()==limite || !Character.isDigit(c))
+        {
+            evt.consume();
+            Toolkit.getDefaultToolkit().beep();
+        }
+    }//GEN-LAST:event_EdadPasKeyTyped
+
+    private void FonoPasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FonoPasKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        int limite = 12;
+        String texto = this.FonoPas.getText();
+        if(texto.length()==limite || !Character.isDigit(c))
+        {
+            evt.consume();
+            Toolkit.getDefaultToolkit().beep();
+        }
+    }//GEN-LAST:event_FonoPasKeyTyped
+
+    private void BotonModificarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonModificarMouseClicked
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(null, "Puede modificar los datos del pasajero exepto el rut, luego guarde los datos de forma normal");
+        EnabledTrue();
+        this.RutPas.setEnabled(false);
+        this.TextoDigVeri.setEnabled(false);
+        modificar = true;
+    }//GEN-LAST:event_BotonModificarMouseClicked
+
+    private void Mensaje3PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_Mensaje3PropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Mensaje3PropertyChange
+
+    private void BotonIngresarUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonIngresarUsuarioMouseClicked
+        // TODO add your handling code here:
+       /*  tipo_us = this.ComboTipoUsuario.getSelectedItem().toString();
+        rut_us = this.TextoRut.getText();
+        String digito_us = this.TextoDigVeriUsu.getText();
+        Conexion conn = new Conexion();
+        boolean respcon = conn.conectarse();
+        Utilidades utili = new Utilidades();
+     if(respcon)
+     {
+        if(tipo_us.equals("pasajero"))
+        {
+            if(rut_us.equals("")|| digito_us.equals(""))
+            {
+                JOptionPane.showMessageDialog(null, "Deve ingresar el rut y digito verificador ", "Ventana", JOptionPane.ERROR_MESSAGE); 
+            }
+            else
+            {
+                rut_us =rut_us + digito_us;
+                String nombre = utili.buscarPax(rut_us);
+                if(nombre.equals(""))
+                {
+                    JOptionPane.showMessageDialog(null, "Usted no presenta registros de hospedaje en el hotel actualmente", "Ventana", JOptionPane.ERROR_MESSAGE); 
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Bienvenido "+ nombre); 
+                    this.FrameLogin.setVisible(false);
+                    this.Menu.setEnabled(true);
+                    this.setTitle("Mantenedor Mifare-Hiatt   Usuario: "+ nombre);
+                     this.Menu.getItem(0).setVisible(false);
+                     this.Menu.getItem(1).setVisible(false);
+                     this.Menu.getItem(2).setVisible(false);
+                     this.Menu.getItem(4).setVisible(false);
+                     rut_us_in = rut_us;
+                }
+            }
+        }
+        else
+        {     
+        nombre_us = this.TextoNombre.getText();
+        char[] arrayC = this.TextoPassword.getPassword(); 
+        password_us = new String(arrayC); 
+       
+        if(rut_us.equals("") || nombre_us.equals("") || password_us.equals("")
+                || tipo_us.equals("")|| digito_us.equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "Deve ingresar todos los datos", "Ventana", JOptionPane.ERROR_MESSAGE); 
+        }
+        else
+        {
+            rut_us = rut_us + digito_us;
+            UsuarioInterno usu = new UsuarioInterno(rut_us,nombre_us,password_us,tipo_us);
+            
+            
+          
+            boolean resp = utili.BuscarUsuarioInterno(usu);
+            if(resp)
+            {
+                JOptionPane.showMessageDialog(null, "Bienvenido : "+nombre_us); 
+                this.FrameLogin.setVisible(false);
+                this.Menu.setEnabled(true);
+                this.setTitle("Mantenedor Mifare-Hiatt   Usuario: "+ nombre_us);
+                rut_us_in = rut_us;
+              if(tipo_us.equals("dependencias"))
+              {
+                tipo_usuario = "dependencias";
+                this.Menu.getItem(0).setVisible(false);
+                this.Menu.getItem(4).setVisible(false);
+                this.Menu.getItem(5).setVisible(false);
+                
+              }
+              else if(tipo_us.equals("recepcionista")){
+                tipo_usuario = "recepcionista";
+                this.Menu.getItem(1).setVisible(false);
+                this.Menu.getItem(4).setVisible(false);
+                this.Menu.getItem(5).setVisible(false);
+              }
+              
+            }
+            else
+            {
+               JOptionPane.showMessageDialog(null, "Usuario incorrecto", "Ventana", JOptionPane.ERROR_MESSAGE); 
+            }
+         
+        }
+       }
+      }
+      else
+      {
+             JOptionPane.showMessageDialog(null,"No hay coneccion a la Base de Datos", "Ventana", JOptionPane.ERROR_MESSAGE);  
+      }*/
+        rut_us = this.TextoRut.getText();
+        String digito_us = this.TextoDigVeriUsu.getText();
+        Conexion conn = new Conexion();
+        boolean respcon = conn.conectarse();
+        Utilidades utili = new Utilidades();
+        char[] arrayC = this.TextoPassword.getPassword(); 
+        password_us = new String(arrayC);
+     if(respcon)
+     {
+       int respr=0;
+       int respd = 0;
+       int respp = 0;
+        if(rut_us.equals("") || password_us.equals("") 
+                || digito_us.equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "Deve ingresar todos los datos", "Ventana", JOptionPane.ERROR_MESSAGE); 
+        }
+        else
+        {
+            rut_us = rut_us + digito_us;
+            UsuarioInterno usu = new UsuarioInterno(rut_us,"",password_us,"");
+            
+            
+          
+            String[] resp = utili.BuscarUsuarioInterno1(usu);
+            if(!resp[0].equals("") && !resp[1].equals(""))
+            {
+                tipo_us = resp[1];
+                nombre_us = resp[0];
+                JOptionPane.showMessageDialog(null, "Bienvenido(a): "+nombre_us+" usuario("+ tipo_us+")"); 
+                this.FrameLogin.setVisible(false);
+                this.Menu.setEnabled(true);
+                this.setTitle("Mantenedor Mifare-Hiatt   Usuario ("+tipo_us+" ): "+ nombre_us);
+                rut_us_in = rut_us;
+              if(tipo_us.equals("dependencias"))
+              {
+                tipo_usuario = "dependencias";
+                this.Menu.getItem(0).setVisible(false);
+                this.Menu.getItem(4).setVisible(false);
+                this.Menu.getItem(5).setVisible(false);
+                
+              }
+              else if(tipo_us.equals("recepcionista")){
+                tipo_usuario = "recepcionista";
+                this.Menu.getItem(1).setVisible(false);
+                this.Menu.getItem(4).setVisible(false);
+                this.Menu.getItem(5).setVisible(false);
+              }
+              
+            }
+            else
+            {
+              String nombre = utili.buscarPax1(rut_us,password_us);
+                if(nombre.equals(""))
+                {
+                    JOptionPane.showMessageDialog(null, "Usuario Incorrecto", "Ventana", JOptionPane.ERROR_MESSAGE); 
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Bienvenido(a): "+ nombre+" usuario(pasajero)"); 
+                    this.FrameLogin.setVisible(false);
+                    this.Menu.setEnabled(true);
+                    this.setTitle("Mantenedor Mifare-Hiatt   Usuario(pasajero) : "+ nombre);
+                     this.Menu.getItem(0).setVisible(false);
+                     this.Menu.getItem(1).setVisible(false);
+                     this.Menu.getItem(2).setVisible(false);
+                     this.Menu.getItem(4).setVisible(false);
+                     rut_us_in = rut_us;
+                } 
+               
+            }
+         
+       
+       }
+     }
+    }//GEN-LAST:event_BotonIngresarUsuarioMouseClicked
+
+    private void BotonSalirUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BotonSalirUsuarioMouseClicked
+        // TODO add your handling code here:
+        System.exit(0);
+}//GEN-LAST:event_BotonSalirUsuarioMouseClicked
+
+    private void ItemSaldoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ItemSaldoMousePressed
+        // TODO add your handling code here:
+       // CrearDestruirObjeto();
+       ConsultarSaldo c = new ConsultarSaldo(this,true);
+        c.setTitle("Saldo Tarjeta");
+        c.TranspasoRut(this.rut_us);
+        c.terminar = false;
+       // c.setSize(500,380);
+        int x =(this.jDesktopPane1.getWidth()/2) - c.getWidth()/2;
+        int y =(this.jDesktopPane1.getHeight()/2) - c.getHeight()/2;
+        c.setLocation(x,y);
+        c.CrearDestruirObjeto();
+        c.setVisible(true);
+        //c.CrearDestruirObjeto();
+       
+    }//GEN-LAST:event_ItemSaldoMousePressed
+
+    private void ComboTipoUsuarioItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ComboTipoUsuarioItemStateChanged
+        // TODO add your handling code here:
+      /*  if(this.ComboTipoUsuario.getSelectedItem().equals("pasajero"))
+        {
+            LimpiarFrameLogo();
+            AparecerFrameLogoPasajero();
+            //this.FrameLogin.setVisible(false);
+           
+        }
+        else if(this.ComboTipoUsuario.getSelectedItem().equals("dependencias")){
+            LimpiarFrameLogo();
+            ApareceFrameLogo();
+        }
+        else if(this.ComboTipoUsuario.getSelectedItem().equals("recepcionista"))
+        {
+            LimpiarFrameLogo();
+            ApareceFrameLogo();
+        }*/
+             
+    }//GEN-LAST:event_ComboTipoUsuarioItemStateChanged
+
+    private void ItemSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ItemSesionMouseClicked
+        // TODO add your handling code here:
+        jframeHiatt jfh = new jframeHiatt();
+        
+        jfh.setVisible(true);
+        JOptionPane.showMessageDialog(null, "la operacion es: "+this.getDefaultCloseOperation());
+        this.setDefaultCloseOperation(4);
+        this.dispose();
+        
+    }//GEN-LAST:event_ItemSesionMouseClicked
+
+    private void ItemSesionMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ItemSesionMousePressed
+        // TODO add your handling code here:
+       
+        int re =JOptionPane.showConfirmDialog(null, "Seguro que desea cerrar sesion");
+        if(re == JOptionPane.YES_OPTION) 
+        {  
+             JOptionPane.showMessageDialog(null, "Su sesion ha sido cerrada correctamente");
+             this.setTitle("Mantenedor Mifare");
+             this.ComboTipoUsuario.setSelectedIndex(0);
+             ApareceItem();
+             //DesapareceFrameLogo();
+             DesapareceFrameLogo1();
+             this.Menu.setEnabled(false);
+             this.FrameLogin.setVisible(true);
+             rut_us_in = "";
+        }
+        
+    }//GEN-LAST:event_ItemSesionMousePressed
+
+    private void TextoRutKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextoRutKeyTyped
+        // TODO add your handling code here:
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        int limite = 8;
+        String texto = this.TextoRut.getText();
+        if(texto.length()==limite || !Character.isDigit(c))
+        {
+            evt.consume();
+            Toolkit.getDefaultToolkit().beep();
+        }
+    }//GEN-LAST:event_TextoRutKeyTyped
+
+    private void TextoDigVeriUsuKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextoDigVeriUsuKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        int limite = 1;
+        String texto = this.TextoDigVeriUsu.getText();
+        if(texto.length()==limite || !Character.isDigit(c)) 
+        {
+            if((c !='k'&& c !='K')||texto.length()==limite)
+            {
+            evt.consume();
+            Toolkit.getDefaultToolkit().beep();
+            }
+           
+        }
+         else
+         {
+                
+         }
+    }//GEN-LAST:event_TextoDigVeriUsuKeyTyped
+public static void CrearDestruirObjeto()
+{
+  if(!targeta_presente)
+  {
+   ct = null;
+  }
+  else
+  {
+     ct = new ConexionTarjeta();
+     ct.ConexionTarjeta2(true);
+  }
+}
+    
+public static void TarjetaPresente(boolean tp)
+{
+    if(!tp)
+    {
+       JOptionPane.showMessageDialog(null, "Se ah retirado la tarjeta", "Ventana", JOptionPane.ERROR_MESSAGE);  
+       
+    }
+}
+public static void NuevaConexionTarjeta()
+{
+    JOptionPane.showMessageDialog(null, "tarjeta insertada");  
+}
+public static void TraerDatos(String[] datos)
+{
+    JOptionPane.showMessageDialog(null, "Su saldo es :" + datos [3]);  
+}
+  public int WindowUploaded1()
+    {
+        Timer t;
+        String reader;
+        String readertemp;
+        String readerName;
+        TerminalFactory factory; 
+        java.util.List<CardTerminal> terminals; 
+        int count=0;
+        int index1=0;
+        int startindex1=0;
+        String readerarray[];
+       
+        try
+        {
+        factory = TerminalFactory.getDefault();
+        terminals = factory.terminals().list();
+        reader=terminals.toString();
+        
+        while(index1!=-1)
+                {
+                   index1= reader.indexOf(",",startindex1+1);
+                   count++;
+                   startindex1=index1;
+                }
+        
+        readertemp=reader;
+        reader=readertemp.replaceAll("]", " ");
+        readertemp=reader.replaceAll("PC/SC terminal", "");
+        reader=readertemp.replace('[',' ');
+        readerarray = reader.split(",", count);
+        int i =0;
+        String pasares[];
+        pasares = new String[2];
+        int indice = count - 1;
+        while (i<count)
+        {
+            pasares[i] = readerarray[i].toString().trim();
+            i++;
+        }
+      
+           String pasanom = pasares[indice]; 
+            readerName = pasanom;
+     
+        //OMNIKEY CardMan 5x21 0 OMNIKEY CardMan 5x21-CL 0
+            return 1;
+        }
+        catch(CardException e)
+        {
+        
+         JOptionPane.showMessageDialog(null, "El lector esta desconectado");
+        
+         return 0;
+         
+          
+        }
+         
+         
+    }  
+  public void listarPax(String nombre){
+       int acum = 0;
+       try
+        {
+            Conexion conn = new Conexion();
+            String sql = "SELECT montos.nombre_prod,montos.precio_prod from montos inner join usuario on montos.id_usuario_monto = usuario.id_interno where usuario.nombre = ? and usuario.estado = 1;";
+            PreparedStatement listar = conn.crearSentencia(sql);
+            listar.setString(1, nombre);
+            ResultSet listado = listar.executeQuery();
+            
+            ResultSet listado1 = listado;
+            
+            DefaultTableModel modelo = new DefaultTableModel();
+            modelo.addColumn("Nombre Producto");
+            modelo.addColumn("Monto");
+            
+           int contador = 0;
+            
+            while(listado.next())
+            {
+                Object[] fila = new Object[2];
+                fila[0] = listado.getString(1);
+                fila[1] = listado.getInt(2);
+                acum = acum + listado.getInt(2);
+                contador++;
+                modelo.addRow(fila);
+            }
+            this.jTableConsumo.setModel(modelo);
+            
+            String a = ""+acum;
+            resultado.setText(a);
+            if(contador == 0)
+                JOptionPane.showMessageDialog(null, "No hay consumos asociados al pasajero", "Ventana", JOptionPane.ERROR_MESSAGE);
+                
+        }
+        catch(SQLException ex)
+        {
+            JOptionPane.showMessageDialog(null, "Problemas con la base de Datos\n"+ ex.getErrorCode(), "Ventana", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, ex.toString());
+        }
+    
+    }            
+    
+ public void DesapareceFrameLogo()
+{
+     this.MensajeRutUsuario.setVisible(false);
+     this.LabeelGuion.setVisible(false);
+     this.MensajeNombreUsuario.setVisible(false);
+     this.MensajePasswordUsuario.setVisible(false);
+     this.TextoRut.setVisible(false);
+     this.TextoDigVeriUsu.setVisible(false);
+     this.TextoNombre.setVisible(false);
+     this.TextoPassword.setVisible(false);
+}
+  public void DesapareceFrameLogo1()
+{
+     this.MensajeRutUsuario.setVisible(true);
+     this.LabeelGuion.setVisible(true);
+     this.MensajeNombreUsuario.setVisible(false);
+     this.MensajePasswordUsuario.setVisible(true);
+     this.TextoRut.setVisible(true);
+     this.TextoDigVeriUsu.setVisible(true);
+     this.TextoNombre.setVisible(false);
+     this.TextoPassword.setVisible(true);
+     this.TextoPassword.setText("");
+     this.TextoRut.setText("");
+     this.TextoDigVeriUsu.setText("");
+}
+public void ApareceFrameLogo()
+{
+     this.MensajeRutUsuario.setVisible(true);
+     this.LabeelGuion.setVisible(true);
+     this.MensajeNombreUsuario.setVisible(true);
+     this.MensajePasswordUsuario.setVisible(true);
+     this.TextoRut.setVisible(true);
+     this.TextoDigVeriUsu.setVisible(true);
+     this.TextoNombre.setVisible(true);
+     this.TextoPassword.setVisible(true);
+ }
+public void ApareceItem()
+{
+    this.Menu.getItem(0).setVisible(true);
+    this.Menu.getItem(1).setVisible(true);
+    this.Menu.getItem(2).setVisible(true);
+    this.Menu.getItem(3).setVisible(true);
+    this.Menu.getItem(5).setVisible(true);
+    this.Menu.getItem(6).setVisible(true);
+} 
+public void LimpiarFrameLogo()
+{
+    this.TextoRut.setText("");
+    this.TextoNombre.setText("");
+    this.TextoPassword.setText("");
+    this.TextoDigVeriUsu.setText("");
+    
+}
+ public void AparecerFrameLogoPasajero()
+ {
+     this.MensajeRutUsuario.setVisible(true);
+     this.TextoRut.setVisible(true);
+     this.LabeelGuion.setVisible(true);
+     this.TextoDigVeriUsu.setVisible(true);
+ }
+    
+    private int validacion(String numero)
+    {
+            int num = 0;
+            char transpaso[]= numero.toCharArray();
+            for(int i = 0; i< numero.length(); i++)
+             {
+               if(transpaso[i] != '0'&& transpaso[i] != '1'&& transpaso[i] != '2'&&transpaso[i] != '3'
+                       && transpaso[i] != '4'&& transpaso[i] != '5'&& transpaso[i] != '6'
+                       && transpaso[i] != '7'&& transpaso[i] != '8'&& transpaso[i] != '9' )
+               {
+                 num = 1;
+               }  
+            }   
+            return num;
+    }
+    
+  public String invertir(String rut){
+  int maximo = rut.length()-1;
+  String invertir_int = "";
+  for (int i = 0; i < rut.length(); i++) {
+    String j = "";
+    j = j+rut.charAt(maximo);
+    invertir_int =invertir_int + j;
+    maximo--;
+    }
+  return invertir_int;
+}
+public String ValidaRut( String rut)
+{
+    int retornar = 0;
+    int a = 2;
+    int rutSumado = 0;
+    
+    for (int i = 0; i < rut.length(); i++) {
+       String paso1 = "";
+       paso1 = paso1+rut.charAt(i);
+       retornar = Integer.parseInt(paso1) * a;
+       rutSumado += retornar;
+      if (a == 7) {
+         a = 1;
+      }
+      a++;
+   }
+    int resto = rutSumado % 11;
+     String Digito = String.valueOf(11 - resto);
+     if (Digito.equals("11")) {
+     Digito = "0";
+      }
+
+      if (Digito.equals("10")) {
+       Digito = "K";
+      }
+    return Digito;
+    
+ }
+
+    public void LimpiarFrame2()
+    {
+        this.RutPas.setText("");
+        this.NombrePas.setText("");
+        this.TextoDigVeri.setText("");
+        this.TextoMonto.setText("0");
+        this.DireccionPas.setText("");
+        this.EmailPas.setText("");
+        this.EdadPas.setText("");
+        this.FonoPas.setText("");
+        this.TextoMonto.setEnabled(false);
+        this.ComboTar.setSelectedIndex(0);
+        this.ComboHab.removeAllItems();
+        this.BotonModificar.setVisible(false);
+        ingreso = false;
+        modificar = false;
+        this.RutPas.setEnabled(true);
+        this.TextoDigVeri.setEnabled(true);
+        
+    }
+    public void LimpiarFrame3()
+    {
+        DefaultTableModel modelo = new DefaultTableModel();
+            modelo.addColumn("Nombre Producto");
+            modelo.addColumn("Monto");
+            this.jTableConsumo.setModel(modelo);
+        this.resultado.setText("0");
+        this.ComboPax.removeAllItems();
+    }
+    public void EnabledFalse()
+    {
+        this.RutPas.setEnabled(false);
+        this.TextoDigVeri.setEnabled(false);
+        this.NombrePas.setEnabled(false);
+        this.DireccionPas.setEnabled(false);
+        this.EdadPas.setEnabled(false);
+        this.EmailPas.setEnabled(false);
+        this.FonoPas.setEnabled(false);
+    }
+    public void EnabledTrue()
+    {
+       this.RutPas.setEnabled(true);
+        this.TextoDigVeri.setEnabled(true);
+        this.NombrePas.setEnabled(true);
+        this.DireccionPas.setEnabled(true);
+        this.EdadPas.setEnabled(true);
+        this.EmailPas.setEnabled(true);
+        this.FonoPas.setEnabled(true); 
+    }
+    public void DesaparecerMenu()
+    {
+        this.Menu.setEnabled(false);
+    }
+
+    /**
+     * @param args the command line arguments
+     */
+   
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try{
+                    
+                     new jframeHiatt().setVisible(true);
+                }
+                catch(Exception ex)
+                {
+                    
+                }
+                
+              
+            }
+        });
+    }
+    
+    
+    private JDialog aboutBox;
+    public int paso = 0;
+    private String nom="";
+    private String rut="";
+    private String numh="";
+    private String tipot="";
+    private String monto = "0";
+    private String dig = "";
+    private String direccion="";
+    private String email = "";
+    private int edad = 0;
+    private int fono = 0;
+    private boolean ingreso = false;
+    private boolean modificar = false;
+    private String tipo_usuario = "";
+    private String rut_us = "";
+    private String nombre_us = "";
+    private String password_us = "";
+    private String tipo_us = "";
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BotonIngresarUsuario;
+    private javax.swing.JButton BotonIngresoP;
+    private javax.swing.JButton BotonModificar;
+    private javax.swing.JButton BotonSalirUsuario;
+    private javax.swing.JButton Buscar;
+    private javax.swing.JComboBox ComboHab;
+    private javax.swing.JComboBox ComboPax;
+    private javax.swing.JComboBox ComboTar;
+    private javax.swing.JComboBox ComboTipoUsuario;
+    private javax.swing.JTextField DireccionPas;
+    private javax.swing.JTextField EdadPas;
+    private javax.swing.JTextField EmailPas;
+    private javax.swing.JTextField FonoPas;
+    private javax.swing.JInternalFrame FrameLogin;
+    private javax.swing.JMenuItem Item1;
+    private javax.swing.JMenuItem Item2;
+    private javax.swing.JMenuItem Item3;
+    private javax.swing.JMenuItem Item4;
+    private javax.swing.JMenuItem ItemSaldo;
+    private javax.swing.JMenuItem ItemSesion;
+    private javax.swing.JLabel LabeelGuion;
+    private javax.swing.JLabel LabelFecha;
+    private javax.swing.JLabel LabelMonto;
+    private javax.swing.JLabel Mensaje1;
+    private javax.swing.JLabel Mensaje2;
+    private javax.swing.JLabel Mensaje3;
+    private javax.swing.JLabel MensajeCombo;
+    private javax.swing.JLabel MensajeDireccion;
+    private javax.swing.JLabel MensajeEdad;
+    private javax.swing.JLabel MensajeEmail;
+    private javax.swing.JLabel MensajeFono;
+    private javax.swing.JLabel MensajeLisatPax;
+    private javax.swing.JLabel MensajeNom;
+    private javax.swing.JLabel MensajeNombreUsuario;
+    private javax.swing.JLabel MensajePasswordUsuario;
+    private javax.swing.JLabel MensajeRut;
+    private javax.swing.JLabel MensajeRutUsuario;
+    private javax.swing.JLabel MensajeTt;
+    private javax.swing.JMenu Menu;
+    private javax.swing.JLabel MnsajeHab;
+    private javax.swing.JTextField NombrePas;
+    private javax.swing.JTextField RutPas;
+    private javax.swing.JButton SalirFrame2;
+    private javax.swing.JTextField TextoDigVeri;
+    private javax.swing.JTextField TextoDigVeriUsu;
+    private javax.swing.JTextField TextoMonto;
+    private javax.swing.JTextField TextoNombre;
+    private javax.swing.JPasswordField TextoPassword;
+    private javax.swing.JTextField TextoRut;
+    private javax.swing.JButton Volver;
+    private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JInternalFrame jInternalFrame2;
+    private javax.swing.JInternalFrame jInternalFrame3;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTableConsumo;
+    private javax.swing.JLabel resultado;
+    // End of variables declaration//GEN-END:variables
+ RegistrarPasajero p = new RegistrarPasajero(); }
